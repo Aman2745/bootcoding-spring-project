@@ -20,14 +20,14 @@ import java.util.Date;
 public class Coupon {
      @Id
      @GeneratedValue
-    private String id;
+    private int id;
     private String title;
     private int description;
-    private String coupon_code;
+    private String couponCode;
     private Date validity;
     private int discount;
     private String category;
-    private Date create_date;
+    private Date createDate;
     private String createdBy;
     private String status;
     private boolean isActive;

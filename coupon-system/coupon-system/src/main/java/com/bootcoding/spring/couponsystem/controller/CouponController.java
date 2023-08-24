@@ -19,7 +19,7 @@ public class CouponController {
     private CouponHelper couponHelper;
 
 @GetMapping("getmultiplecoupon")
-    public List<String>getnewcoupon(){
+    public List<Integer>getnewcoupon(){
     System.out.println("/getinvoked-getmultiplecoupon");
     return couponService.getNewCoupon(10);
   }
@@ -39,10 +39,11 @@ public class CouponController {
 //  }
 
 
-    // 2. Get Coupon Details by Coupon Id using PathVariable
+   //  2. Get Coupon Details by Coupon Id using PathVariable
 //    @GetMapping("coupon-id/{id}")
 //    public String getCouponById(@PathVariable("id") String couponId){
 //        return couponId + "-" + couponService.newCoupon();
+//
 //    }
 
     // 2.2 Get Coupon Details by Coupon Id using PathVariable
@@ -83,7 +84,10 @@ public class CouponController {
 //                .validFor(3).build();
     }
 
-
+    @PostMapping("/generating-multiple/{id}")
+    public List<Coupon> generatingMultiple(@PathVariable int id){
+    return couponService.multipleGenerator(id);
+    }
 
 
 

@@ -2,32 +2,45 @@ package com.bootcoding.spring.couponsystem.service;
 
 import com.bootcoding.spring.couponsystem.model.Coupon;
 import com.bootcoding.spring.couponsystem.helper.CouponHelper;
-import com.bootcoding.spring.couponsystem.util.DateGenerator;
+import com.bootcoding.spring.couponsystem.repository.CouponRepository;
+import com.bootcoding.spring.couponsystem.util.*;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-import java.util.UUID;
+
 
 @Component
+@Service
+
 public class CouponService {
     //dependency inject
     @Autowired
     private CouponHelper couponHelper = null;
-    private DateGenerator dateGenerator;
+//    @Autowired
+//    private DateGenerator dateGenerator;
+//    @Autowired
+//    private Generator_Id generatorId;
+//    @Autowired
+//    private TitleGenerator titleGenerator;
+//    @Autowired
+//    private Coupon_Code_Generator couponCodeGenerator;
+    @Autowired
+    private CouponRepository couponRepository;
 
-    public String getNewCoupon() {
 
+    public int getNewCoupon() {
         return couponHelper.newCoupon();
     }
 
-    public List<String> getNewCoupon(int quantity) {
-        List<String> coupons = new ArrayList<>();
+    public List<Integer> getNewCoupon(int quantity) {
+        List<Integer> coupons = new ArrayList<>();
         for (int i = 0; i < quantity; i++) {
-            String newcoupon = couponHelper.newCoupon();
-            coupons.add(newcoupon);
+            int newcoupon = couponHelper.newCoupon();
+            coupons.add(Integer.valueOf(newcoupon));
         }
         return coupons;
     }
@@ -35,10 +48,25 @@ public class CouponService {
 
     public Coupon generateNewCoupon() {
         Coupon coupon = Coupon.builder()
-                .id(UUID.randomUUID().toString())
-//              .validFor(5 + new Random().nextInt(90))
-//              .type("COUPON")
-                /*
+                .title(TitleGenerator.randomTitle())
+                .validity(DateGenerator.randomDate())
+                .isActive(RandomBoolean.randomBoolean())
+                .couponCode(CouponCodeGenerator.generateCouponCode())
+                .discount(DiscountRandom.discountRandom())
+                .build();
+       return couponRepository.save(coupon);
+    }
+
+    public List<Coupon> multipleGenerator(int id){
+        List<Coupon> newCoupon=new ArrayList<>();
+        for(int i=0;i<id;i++) {
+            newCoupon.add(generateNewCoupon());
+        }
+        return couponRepository.saveAll(newCoupon);
+    }
+
+
+            /*
                     private String id;
     private String title;
     private int description;
@@ -51,9 +79,4 @@ public class CouponService {
     private String status;
     private boolean isActive;2
                 * */
-                .build();
-        return coupon;
-    }
-
-
 }

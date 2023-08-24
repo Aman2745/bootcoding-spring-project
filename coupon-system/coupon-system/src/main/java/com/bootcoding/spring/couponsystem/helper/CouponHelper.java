@@ -9,12 +9,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import static java.util.UUID.randomUUID;
+
 @Component
 
 public class CouponHelper {
 
-    public String newCoupon(){
-        return UUID.randomUUID().toString();
+    public int newCoupon(){
+        int uu= Integer.parseInt(UUID.randomUUID().toString());
+        return uu;
     }
 
 }
